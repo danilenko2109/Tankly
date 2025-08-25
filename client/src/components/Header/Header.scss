@@ -12,6 +12,18 @@
   @include glass-effect(0.8);
   box-shadow: $shadow-lg;
   padding: $spacing-md;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  
+  &--visible {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+  
+  &--hidden {
+    transform: translateX(-50%) translateY(-100px);
+    opacity: 0;
+    pointer-events: none;
+  }
   
   .container {
     display: flex;

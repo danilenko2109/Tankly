@@ -1,4 +1,4 @@
-// === FILE: src/pages/PromotionsPage/PromotionsPage.scss ===
+
 @import '../FuelPage/FuelPage.scss';
 
 .promotions-page {
@@ -247,7 +247,7 @@
   }
 }
 
-// Анимации
+
 @keyframes pulse-gold {
   0%, 100% {
     box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
@@ -261,7 +261,7 @@
   animation: pulse-gold 2s ease-in-out infinite;
 }
 
-// Адаптивность
+
 @media (max-width: 768px) {
   .promotions-page {
     padding: 15px 15px 100px;
@@ -319,11 +319,61 @@
   }
 }
 
-// Иконки анимации
+
 .promotion-icon {
   transition: transform 0.3s ease;
 }
 
 .promotion-card:hover .promotion-icon {
   transform: scale(1.1);
+}
+
+
+
+.soon-banner {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: linear-gradient(135deg, #ff6b6b, #ff3838);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 10px rgba(255, 107, 107, 0.4);
+  z-index: 2;
+  animation: pulse 2s infinite;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #ff6b6b, #ff3838, #ff6b6b);
+    z-index: -1;
+    animation: borderPulse 2s infinite;
+  }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+@keyframes borderPulse {
+  0% { opacity: 0.7; }
+  50% { opacity: 1; }
+  100% { opacity: 0.7; }
+}
+
+
+.promotion-card {
+  position: relative;
+  overflow: hidden;
 }

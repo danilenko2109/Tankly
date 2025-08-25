@@ -1,10 +1,10 @@
-// === FILE: src/pages/FuelPage/FuelPage.jsx ===
+
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import NavBar from '../../components/NavBar/NavBar';
 import QrScanner from '../../components/QrScanner/QrScanner';
 import './FuelPage.scss';
 
-// ---- helpers: localStorage
+// localStorage
 const LS_KEYS = {
   state: 'fuelApp:premium:v4',
 };
@@ -12,7 +12,10 @@ const LS_KEYS = {
 const saveState = (s) => {
   try {
     localStorage.setItem(LS_KEYS.state, JSON.stringify(s));
-  } catch {}
+  } catch{
+    console.log("срун пидар");
+    
+  }
 };
 
 const loadState = () => {
@@ -24,7 +27,7 @@ const loadState = () => {
   }
 };
 
-// ---- начальные значения
+
 const initialPrices = {
   'АИ-92': 52.9,
   'АИ-95': 56.9,
@@ -164,7 +167,7 @@ function FuelPage() {
     }, 2000);
   };
 
-  // Покупка/оплата
+
   function handleRefuel() {
     if (!selectedFuel || fuelAmount <= 0) {
       alert('Выберите топливо и укажите количество');
@@ -210,7 +213,6 @@ function FuelPage() {
     setFuelAmount(0);
   }
 
-  // QR/сканер
   const handleScan = (data) => {
     if (!data) return;
     const stationId = (String(data).match(/station:(\w+)/) || [])[1] || 'UNKNOWN';
@@ -233,7 +235,7 @@ function FuelPage() {
     }
   };
 
-  // Icons/Colors
+
   function getFuelIcon(f) {
     switch (f) { case 'АИ-95+': return '🔥'; case 'АИ-98': return '⚡'; case 'ДТ': return '🚛'; case 'ГАЗ': return '🔵'; default: return '⛽'; }
   }
@@ -298,14 +300,6 @@ function FuelPage() {
           </div>
         </div>
 
-        <button className="scan-button neon-button" onClick={() => setShowScanner(true)}>
-          <span className="scan-icon">
-            <div className="qr-lines"></div>
-            <div className="pulse-ring"></div>
-          </span>
-          <span className="scan-text">Сканировать QR колонки</span>
-          <div className="button-glow"></div>
-        </button>
       </header>
 
       <nav className="section-nav">

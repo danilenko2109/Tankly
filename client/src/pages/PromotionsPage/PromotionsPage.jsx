@@ -1,9 +1,14 @@
-// === FILE: src/pages/PromotionsPage/PromotionsPage.jsx ===
+
 import React from 'react';
 import NavBar from '../../components/NavBar/NavBar';
 import './PromotionsPage.scss';
 
-// ---- helpers: simple Code39 barcode (SVG)
+const SoonBanner = () => (
+  <div className="soon-banner">
+    <span>Скоро</span>
+  </div>
+);
+
 const CODE39 = {
   '0': 'nnnwwnwnn',
   '1': 'wnnwnnnnw', 
@@ -65,7 +70,7 @@ function Code39({ value = '', height = 100, stroke = 3, showText = true }) {
 }
 
 function PromotionsPage() {
-  const discountCode = "DISCOUNT-2024-15%"; // Код скидки
+  const discountCode = "DISCOUNT-2024-15%";
 
   return (
     <div className="promotions-page">
@@ -75,7 +80,7 @@ function PromotionsPage() {
       </div>
 
       <div className="promotions-container">
-        {/* Большой штрих-код скидки */}
+  
         <div className="discount-banner glass-card">
           <h1>Ваша персональная скидка</h1>
           <p className="discount-amount">15% на всё топливо</p>
@@ -116,6 +121,7 @@ function PromotionsPage() {
           </div>
 
           <div className="promotion-card glass-card">
+            <SoonBanner />
             <div className="promotion-icon">🌙</div>
             <h3>Ночная заправка</h3>
             <p>С 22:00 до 06:00 дополнительная скидка 2%</p>
@@ -123,6 +129,7 @@ function PromotionsPage() {
           </div>
 
           <div className="promotion-card glass-card">
+            <SoonBanner />
             <div className="promotion-icon">🎂</div>
             <h3>День рождения</h3>
             <p>В день рождения получайте двойную скидку</p>
@@ -130,6 +137,7 @@ function PromotionsPage() {
           </div>
 
           <div className="promotion-card glass-card">
+            <SoonBanner />
             <div className="promotion-icon">☕</div>
             <h3>Кофе + топливо</h3>
             <p>При покупке кофе скидка 1.5₽ на каждый литр</p>
@@ -137,6 +145,7 @@ function PromotionsPage() {
           </div>
 
           <div className="promotion-card glass-card">
+            <SoonBanner />
             <div className="promotion-icon">👥</div>
             <h3>Приведи друга</h3>
             <p>Приведите друга и получите +500 бонусных баллов</p>
@@ -144,6 +153,7 @@ function PromotionsPage() {
           </div>
 
           <div className="promotion-card glass-card">
+            <SoonBanner />
             <div className="promotion-icon">💳</div>
             <h3>Картой онлайн</h3>
             <p>Оплата картой через приложение - дополнительно 1%</p>
