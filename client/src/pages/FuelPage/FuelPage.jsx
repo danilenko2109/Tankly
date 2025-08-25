@@ -29,11 +29,9 @@ const loadState = () => {
 
 
 const initialPrices = {
-  'АИ-92': 52.9,
-  'АИ-95': 56.9,
-  'АИ-95+': 59.9,
-  'АИ-98': 62.9,
-  'ДТ': 55.4,
+  'ДТ': 69.2,
+  'АИ-92': 58.9,
+  'АИ-95+': 63.4,
   'ГАЗ': 28.5,
 };
 
@@ -76,7 +74,7 @@ function FuelPage() {
 
   useEffect(() => { hydrated.current = true; }, []);
 
-  // UI State
+
   const [showScanner, setShowScanner] = useState(false);
   const [selectedFuel, setSelectedFuel] = useState(state.favoriteFuel);
   const [fuelAmount, setFuelAmount] = useState(0);
@@ -99,7 +97,7 @@ function FuelPage() {
 
   const userStatus = useMemo(() => deriveStatus(state.loyaltyPoints), [state.loyaltyPoints]);
 
-  // Эффект загрузки
+
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 1500);
     return () => clearTimeout(timer);
@@ -127,7 +125,7 @@ function FuelPage() {
     }
   }, [selectedFuel, fuelAmount, state.prices, userStatus]);
 
-  // Автодрейф цен
+
   useEffect(() => {
     if (!isDrifting) return;
     const iv = setInterval(() => {
@@ -237,7 +235,7 @@ function FuelPage() {
 
 
   function getFuelIcon(f) {
-    switch (f) { case 'АИ-95+': return '🔥'; case 'АИ-98': return '⚡'; case 'ДТ': return '🚛'; case 'ГАЗ': return '🔵'; default: return '⛽'; }
+    switch (f) { case '95+': return '🔥'; case '100': return '⚡'; case 'ГАЗ': return '🔵'; default: return '⛽'; }
   }
 
   function getStatusIcon(status) {

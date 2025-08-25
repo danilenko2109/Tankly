@@ -1,379 +1,437 @@
-
-@import '../FuelPage/FuelPage.scss';
-
 .promotions-page {
+  padding: 20px;
+  padding-bottom: 100px;
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%);
   min-height: 100vh;
-  background: $bg-dark;
-  color: $text-white;
-  padding: 20px 20px 120px;
-  font-family: 'Inter', sans-serif;
-  position: relative;
-  overflow-x: hidden;
+  color: #FFFFFF;
   margin-top: 120px;
-}
 
-.promotions-container {
-  max-width: 800px;
-  margin: 0 auto;
-}
+  .promotions-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
 
-.discount-banner {
-  text-align: center;
-  padding: 25px;
-  margin-bottom: 25px;
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0.05));
-  border: 2px solid rgba(212, 175, 55, 0.3);
-  
-  h1 {
-    font-size: 24px;
-    margin-bottom: 10px;
-    background: linear-gradient(135deg, $accent-gold, #ffd700);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  .glass-card {
+    background: rgba(20, 20, 43, 0.8);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   }
-  
-  .discount-amount {
-    font-size: 20px;
-    font-weight: 700;
-    color: $accent-gold;
-    margin-bottom: 20px;
-  }
-  
-  .barcode-container {
-    margin: 20px 0;
-    padding: 15px;
-    background: white;
-    border-radius: 12px;
-    display: inline-block;
-    max-width: 100%;
-    overflow: hidden;
-    
-    .barcode {
-      color: #000;
-      max-width: 100%;
-      
-      svg {
-        max-width: 100%;
-        height: auto;
+
+  .discount-banner {
+    text-align: center;
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #D4AF37 0%, #FFDB6E 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .discount-amount {
+      font-size: 1.8rem;
+      color: #D4AF37;
+      margin-bottom: 20px;
+    }
+
+    .barcode-container {
+      margin: 20px auto;
+      display: flex;
+      justify-content: center;
+
+      .barcode {
+        svg {
+          color: #FFFFFF;
+        }
+
+        .barcode__text {
+          margin-top: 10px;
+          font-size: 0.9rem;
+          color: rgba(255, 255, 255, 0.7);
+        }
       }
-      
-      .barcode__text {
-        font-family: 'Courier New', monospace;
-        font-weight: 600;
-        font-size: 14px;
-        margin-top: 12px;
-        color: #000;
-        word-break: break-all;
+    }
+
+    .discount-info {
+      margin-top: 15px;
+
+      .discount-detail {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        font-size: 1rem;
+
+        .label {
+          color: rgba(255, 255, 255, 0.6);
+        }
+
+        .value {
+          color: #D4AF37;
+        }
       }
     }
   }
-  
-  .discount-info {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 12px;
-    margin-top: 18px;
-    
-    .discount-detail {
+
+  .user-cards {
+    .user-cards-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 15px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      
-      .label {
-        color: $text-muted;
-        font-weight: 500;
-        font-size: 14px;
+      margin-bottom: 20px;
+
+      h2 {
+        color: #D4AF37;
       }
-      
-      .value {
+
+      .add-card-btn {
+        background: linear-gradient(135deg, #D4AF37 0%, #FFDB6E 100%);
+        color: #0f0f23;
+        padding: 8px 16px;
+        border-radius: 12px;
         font-weight: 600;
-        color: $accent-gold;
-        font-size: 14px;
+        cursor: pointer;
+        border: none;
+        transition: 0.3s;
+
+        &:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
       }
     }
-  }
-}
 
-.instruction-card {
-  margin-bottom: 25px;
-  padding: 20px;
-  
-  h2 {
-    font-size: 20px;
-    margin-bottom: 12px;
-    color: $text-white;
-  }
-  
-  ol {
-    padding-left: 18px;
-    
-    li {
-      margin-bottom: 8px;
-      line-height: 1.5;
-      font-size: 14px;
-      
-      &::marker {
-        color: $accent-gold;
-        font-weight: bold;
-      }
-    }
-  }
-}
-
-.promotions-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 16px;
-  margin-bottom: 25px;
-}
-
-.promotion-card {
-  padding: 20px;
-  text-align: center;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  }
-  
-  .promotion-icon {
-    font-size: 32px;
-    margin-bottom: 12px;
-  }
-  
-  h3 {
-    font-size: 16px;
-    margin-bottom: 8px;
-    color: $text-white;
-  }
-  
-  p {
-    color: $text-muted;
-    margin-bottom: 12px;
-    line-height: 1.4;
-    font-size: 13px;
-  }
-  
-  .promotion-discount {
-    display: inline-block;
-    padding: 6px 12px;
-    background: linear-gradient(135deg, $accent-gold, #ffd700);
-    color: #000;
-    border-radius: 16px;
-    font-weight: 700;
-    font-size: 12px;
-  }
-}
-
-.qr-instruction {
-  padding: 20px;
-  margin-bottom: 25px;
-  
-  h2 {
-    font-size: 20px;
-    margin-bottom: 16px;
-    text-align: center;
-    color: $text-white;
-  }
-  
-  .qr-locations {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px;
-    
-    .qr-location {
+    .cards-list {
       display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 10px;
-      
-      .location-icon {
-        font-size: 24px;
-        width: 40px;
-        height: 40px;
+      flex-direction: column;
+      gap: 15px;
+
+      .card-item {
         display: flex;
         align-items: center;
-        justify-content: center;
-        background: rgba($accent-gold, 0.1);
-        border-radius: 50%;
-      }
-      
-      .location-info {
-        h4 {
-          margin-bottom: 4px;
-          color: $text-white;
-          font-size: 14px;
+        justify-content: space-between;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 16px;
+        padding: 15px 20px;
+
+        .card-logo {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: bold;
+          font-size: 1.2rem;
+          background: white;
+          color: #D4AF37;
         }
-        
-        p {
-          color: $text-muted;
-          font-size: 12px;
-          line-height: 1.3;
+
+        .card-info {
+          flex: 1;
+          margin-left: 15px;
+
+          .card-number {
+            font-weight: 600;
+          }
+
+          .card-status {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+
+            &.active {
+              color: #4CAF50;
+            }
+          }
         }
-      }
-    }
-  }
-}
 
-.terms-section {
-  padding: 20px;
-  
-  h3 {
-    font-size: 18px;
-    margin-bottom: 12px;
-    color: $text-white;
-  }
-  
-  ul {
-    padding-left: 18px;
-    
-    li {
-      margin-bottom: 8px;
-      color: $text-muted;
-      line-height: 1.4;
-      font-size: 13px;
-      
-      &::marker {
-        color: $accent-gold;
-      }
-    }
-  }
-}
+        .delete-card-btn {
+          background: none;
+          border: none;
+          color: rgba(255, 255, 255, 0.6);
+          font-size: 1.5rem;
+          cursor: pointer;
+          transition: 0.2s;
 
-
-@keyframes pulse-gold {
-  0%, 100% {
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
-  }
-  50% {
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
-  }
-}
-
-.discount-banner {
-  animation: pulse-gold 2s ease-in-out infinite;
-}
-
-
-@media (max-width: 768px) {
-  .promotions-page {
-    padding: 15px 15px 100px;
-  }
-  
-  .discount-banner {
-    padding: 20px;
-    
-    h1 {
-      font-size: 20px;
-    }
-    
-    .discount-amount {
-      font-size: 18px;
-    }
-    
-    .barcode-container {
-      padding: 12px;
-      
-      .barcode {
-        height: 60px;
-        
-        .barcode__text {
-          font-size: 12px;
-        }
-      }
-    }
-    
-    .discount-info {
-      grid-template-columns: 1fr;
-      
-      .discount-detail {
-        padding: 8px 12px;
-        
-        .label, .value {
-          font-size: 12px;
+          &:hover {
+            color: #ff4d4d;
+          }
         }
       }
     }
   }
-  
+
+  .promotion-card {
+    position: relative;
+    text-align: center;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-5px);
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.05) 100%);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .promotion-icon {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      font-size: 1.3rem;
+      color: #D4AF37;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .promotion-discount {
+      margin-top: 15px;
+      font-weight: bold;
+      color: #D4AF37;
+    }
+
+    .soon-banner {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: rgba(212, 175, 55, 0.2);
+      color: #D4AF37;
+      padding: 4px 10px;
+      font-size: 0.8rem;
+      border-radius: 8px;
+    }
+  }
+
   .promotions-grid {
-    grid-template-columns: 1fr;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
   }
-  
-  .qr-locations {
-    grid-template-columns: 1fr;
-  }
-  
+
   .instruction-card,
-  .promotion-card,
   .qr-instruction,
   .terms-section {
-    padding: 16px;
+    h2, h3 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      color: #D4AF37;
+    }
+
+    ol, ul {
+      padding-left: 20px;
+      li {
+        margin-bottom: 10px;
+        color: rgba(255, 255, 255, 0.85);
+      }
+    }
+  }
+
+}
+// Модальные окна
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  backdrop-filter: blur(6px);
+  animation: fadeIn 0.3s ease;
+
+  .modal-content {
+    background: rgba(20, 20, 43, 0.9);
+    border-radius: 24px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    padding: 30px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    transform: translateY(-20px);
+    animation: slideIn 0.4s ease forwards;
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+
+      h2 {
+        font-size: 1.5rem;
+        color: #D4AF37;
+      }
+
+      .modal-close {
+        background: none;
+        border: none;
+        font-size: 1.8rem;
+        color: rgba(255, 255, 255, 0.8);
+        cursor: pointer;
+        transition: color 0.2s;
+
+        &:hover {
+          color: #ff4d4d;
+        }
+      }
+    }
+
+    .modal-notice {
+      padding: 12px 15px;
+      border-radius: 12px;
+      background: rgba(212, 175, 55, 0.08);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: #D4AF37;
+        font-weight: 600;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px 14px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.05);
+        color: #fff;
+        outline: none;
+        transition: border 0.2s;
+
+        &:focus {
+          border-color: #D4AF37;
+        }
+      }
+
+      .partner-selector {
+        display: flex;
+        gap: 15px;
+
+        .partner-option {
+          flex: 1;
+          background: white;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 12px;
+          padding: 15px;
+          text-align: center;
+          cursor: pointer;
+          transition: all 0.3s ease;
+
+          &:hover {
+            transform: translateY(-4px);
+            // background: #D4AF37;
+          }
+
+          &.active {
+            border-color: green;
+            background: #D4AF37;
+          }
+
+          span {
+            display: block;
+            margin-top: 8px;
+            color: rgba(255, 255, 255, 0.85);
+          }
+        }
+      }
+    }
+
+    .error-message {
+      color: #ff4d4d;
+      margin-bottom: 15px;
+      font-size: 0.9rem;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+
+      button {
+        padding: 10px 18px;
+        border-radius: 12px;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        &:hover {
+          transform: translateY(-3px);
+        }
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+      }
+
+      .primary {
+        background: linear-gradient(135deg, #D4AF37 0%, #FFDB6E 100%);
+        color: #0f0f23;
+      }
+
+      .processing {
+        background: rgba(255, 255, 255, 0.2);
+        color: rgba(255, 255, 255, 0.7);
+      }
+    }
+  }
+}
+
+// Анимации
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+// Адаптив
+@media (max-width: 768px) {
+  .promotions-page {
+    padding: 15px;
+
+    .discount-banner {
+      h1 {
+        font-size: 1.6rem;
+      }
+
+      .discount-amount {
+        font-size: 1.3rem;
+      }
+    }
+
+    .promotions-grid {
+      grid-template-columns: 1fr;
+    }
   }
 }
 
 
-.promotion-icon {
-  transition: transform 0.3s ease;
-}
+.company_name {
 
-.promotion-card:hover .promotion-icon {
-  transform: scale(1.1);
-}
-
-
-
-.soon-banner {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: linear-gradient(135deg, #ff6b6b, #ff3838);
-  color: white;
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: 0 4px 10px rgba(255, 107, 107, 0.4);
-  z-index: 2;
-  animation: pulse 2s infinite;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    border-radius: 14px;
-    background: linear-gradient(135deg, #ff6b6b, #ff3838, #ff6b6b);
-    z-index: -1;
-    animation: borderPulse 2s infinite;
-  }
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
-
-@keyframes borderPulse {
-  0% { opacity: 0.7; }
-  50% { opacity: 1; }
-  100% { opacity: 0.7; }
-}
-
-
-.promotion-card {
-  position: relative;
-  overflow: hidden;
+  color: black;
 }

@@ -5,14 +5,7 @@ const AboutUsPage = () => {
   const partners = [
     "Лукойл",
     "Роснефть",
-    "Газпромнефть",
-    "Татнефть",
-    "Башнефть",
-    "Сургутнефтегаз",
-    "ТНК",
-    "АЗС 777",
-    "Экоойл",
-    "Несте"
+    
   ];
 
   return (
@@ -52,14 +45,20 @@ const AboutUsPage = () => {
           </p>
           
           <div className="partners-grid">
-            {partners.map((partner, index) => (
-              <div key={index} className="partner-card">
+           
+              <div className="partner-card">
                 <div className="partner-logo">
-                  {partner.slice(0, 2)}
+                  <img src="/Lukoil.svg" alt="#" width="50px" />
                 </div>
-                <div className="partner-name">{partner}</div>
+                <div className="partner-name">Лукойл</div>
               </div>
-            ))}
+              <div className="partner-card">
+                <div className="partner-logo">
+                  <img src="/Rosneft.svg" alt="#" width="50px" />
+                </div>
+                <div className="partner-name">Роснефть</div>
+              </div>
+        
           </div>
         </section>
 
