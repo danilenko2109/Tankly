@@ -1,7 +1,7 @@
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import NavBar from '../../components/NavBar/NavBar';
-import QrScanner from '../../components/QrScanner/QrScanner';
+
 import './FuelPage.scss';
 
 // localStorage
@@ -331,7 +331,7 @@ function FuelPage() {
             </div>
             
             <div className="prices-grid">
-              {Object.entries(state.prices || {}).map(([fuel, price], index) => {
+              {Object.entries(state.prices || {}).map(([fuel, price]) => {
                 const finalP = finalPricePerL(fuel);
                 const baseDisc = baseDiscountForFuel(fuel);
                 const isSelected = selectedFuel === fuel;
