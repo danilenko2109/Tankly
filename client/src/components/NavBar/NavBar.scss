@@ -1,0 +1,109 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.navbar {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: $z-index-high;
+  width: calc(100% - 48px);
+  max-width: 400px;
+  @include glass-effect(0.8);
+  box-shadow: $shadow-lg;
+  padding: $spacing-sm;
+  
+  &__container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  
+  &__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba($accent-gold, 0.1) 0%, rgba($accent-gold, 0.05) 100%);
+      opacity: 0;
+      transition: opacity $transition-normal;
+      border-radius: 14px;
+    }
+    
+    &:hover::before {
+      opacity: 0.5;
+    }
+    
+    &--active {
+      &::before {
+        opacity: 1;
+      }
+      
+      .navbar__icon {
+        transform: translateY(-3px);
+        color: $accent-gold;
+        background: rgba($accent-gold, 0.1);
+        box-shadow: 0 5px 15px rgba($accent-gold, 0.15);
+      }
+      
+      .navbar__label {
+        color: $accent-gold;
+        font-weight: 600;
+        transform: translateY(1px);
+      }
+    }
+  }
+  
+  &__icon {
+    font-size: 22px;
+    margin-bottom: 4px;
+    transition: all $transition-normal;
+    padding: $spacing-sm;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    color: $text-muted;
+  }
+  
+  &__label {
+    font-size: 11px;
+    font-weight: 500;
+    color: $text-muted;
+    transition: all $transition-normal;
+  }
+  
+  @include responsive(mobile) {
+    width: calc(100% - 40px);
+    bottom: 10px;
+    padding: 6px;
+    
+    &__item {
+      padding: 8px 12px;
+    }
+    
+    &__icon {
+      font-size: 20px;
+      padding: 6px;
+    }
+    
+    &__label {
+      font-size: 10px;
+    }
+  }
+}

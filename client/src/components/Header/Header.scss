@@ -1,0 +1,67 @@
+@import '../../styles/variables';
+@import '../../styles//mixins';
+
+.header {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: $z-index-high;
+  width: calc(100% - 48px);
+  max-width: 400px;
+  @include glass-effect(0.8);
+  box-shadow: $shadow-lg;
+  padding: $spacing-md;
+  
+  .container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: all $transition-normal;
+    
+    &:hover {
+      transform: translateY(-2px);
+    }
+    
+    &__icon {
+      width: 32px;
+      height: 32px;
+      margin-right: $spacing-md;
+      border-radius: $border-radius-sm;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 6px;
+      box-shadow: $shadow-md;
+    }
+    
+    &__text {
+      font-size: 20px;
+      font-weight: 600;
+      color: $text-light;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+  }
+  
+  @include responsive(mobile) {
+    width: calc(100% - 40px);
+    top: 10px;
+    padding: $spacing-sm 14px;
+    
+    .logo {
+      &__icon {
+        width: 28px;
+        height: 28px;
+        margin-right: 10px;
+      }
+      
+      &__text {
+        font-size: 18px;
+      }
+    }
+  }
+}

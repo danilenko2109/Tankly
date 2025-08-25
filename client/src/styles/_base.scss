@@ -1,0 +1,117 @@
+@import 'variables';
+@import 'mixins';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: 'Inter', sans-serif;
+  background: $bg-dark;
+  color: $text-white;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+// Scrollbar styles
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $accent-gold;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: lighten($accent-gold, 10%);
+}
+
+// Common utility classes
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 $spacing-md;
+}
+
+.page-wrapper {
+  min-height: 100vh;
+  padding: $spacing-xl $spacing-md 120px;
+  margin-top: 120px;
+  
+  @include responsive(mobile) {
+    padding: $spacing-lg $spacing-sm 100px;
+    margin-top: 100px;
+  }
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: $spacing-lg;
+  @include gradient-text;
+  
+  &::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(90deg, $accent-gold, transparent);
+    border-radius: 2px;
+    margin-top: $spacing-xs;
+  }
+}
+
+.glass-card {
+  @include glass-effect;
+  padding: $spacing-lg;
+  @include card-hover;
+  
+  @include responsive(mobile) {
+    padding: $spacing-md;
+  }
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, $accent-gold, #ffd700);
+  color: #000;
+  border: none;
+  border-radius: $border-radius-md;
+  padding: $spacing-md $spacing-lg;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all $transition-normal;
+  
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba($accent-gold, 0.3);
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: $text-white;
+  border-radius: $border-radius-md;
+  padding: $spacing-md $spacing-lg;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all $transition-normal;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+}
