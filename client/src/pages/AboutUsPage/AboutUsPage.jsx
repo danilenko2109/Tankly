@@ -2,11 +2,7 @@ import React from 'react';
 import './AboutUsPage.scss';
 
 const AboutUsPage = () => {
-  const partners = [
-    "Лукойл",
-    "Роснефть",
-    
-  ];
+  
 
   return (
     <div className="about-us-page">

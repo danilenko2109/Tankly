@@ -1,242 +1,644 @@
-.promotions-page {
-  padding: 20px;
-  padding-bottom: 100px;
-  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%);
-  min-height: 100vh;
-  color: #FFFFFF;
-  margin-top: 120px;
+$bg-dark: #0f1224;
+$card-bg: rgba(20, 20, 43, 0.6);
+$card-border: rgba(255, 255, 255, 0.1);
+$text-white: rgba(255, 255, 255, 0.95);
+$text-light: rgba(255, 255, 255, 0.8);
+$text-muted: rgba(255, 255, 255, 0.6);
+$accent-gold: #D4AF37;
+$accent-blue: #667eea;
+$accent-purple: #764ba2;
 
+
+@mixin glass-effect {
+  background: $card-bg;
+  backdrop-filter: blur(20px);
+  border: 1px solid $card-border;
+  border-radius: 20px;
+}
+
+@mixin glow-effect($color) {
+  box-shadow: 0 0 15px $color, 0 0 30px $color;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 5px $accent-gold; }
+  50% { box-shadow: 0 0 20px $accent-gold, 0 0 30px $accent-gold; }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes particleMove {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; }
+}
+
+
+
+.promotions-page {
+  min-height: 100vh;
+  background: $bg-dark;
+  color: $text-white;
+  padding: 20px 20px 120px;
+  font-family: 'Inter', sans-serif;
+  position: relative;
+  overflow-x: hidden;
+  margin-top: 120px;
+  
   .promotions-container {
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 25px;
   }
-
+  
   .glass-card {
-    background: rgba(20, 20, 43, 0.8);
-    backdrop-filter: blur(20px);
-    border-radius: 24px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 30px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    @include glass-effect;
+    padding: 25px;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+    }
   }
-
+  
   .discount-banner {
     text-align: center;
-
+    position: relative;
+    overflow: hidden;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at top right, rgba($accent-gold, 0.1), transparent 70%);
+      z-index: 0;
+    }
+    
     h1 {
-      font-size: 2rem;
+      font-size: 28px;
+      font-weight: 800;
       margin-bottom: 10px;
-      background: linear-gradient(135deg, #D4AF37 0%, #FFDB6E 100%);
+      background: linear-gradient(135deg, $text-white, $accent-gold);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      position: relative;
+      z-index: 2;
     }
-
+    
     .discount-amount {
-      font-size: 1.8rem;
-      color: #D4AF37;
-      margin-bottom: 20px;
+      font-size: 32px;
+      font-weight: 900;
+      color: $accent-gold;
+      margin-bottom: 25px;
+      position: relative;
+      z-index: 2;
+      text-shadow: 0 0 20px rgba($accent-gold, 0.3);
     }
-
+    
     .barcode-container {
-      margin: 20px auto;
+      margin: 25px auto;
       display: flex;
       justify-content: center;
-
+      position: relative;
+      z-index: 2;
+      
       .barcode {
+        padding: 20px;
+        background: rgba(0,0,0,0.2);
+        border-radius: 16px;
+        
         svg {
-          color: #FFFFFF;
+          color: $text-white;
+          filter: drop-shadow(0 0 5px rgba($accent-gold, 0.5));
         }
-
+        
         .barcode__text {
-          margin-top: 10px;
-          font-size: 0.9rem;
-          color: rgba(255, 255, 255, 0.7);
+          margin-top: 15px;
+          font-size: 14px;
+          color: $text-muted;
+          letter-spacing: 1px;
+          font-family: 'Courier New', monospace;
         }
       }
     }
-
+    
     .discount-info {
-      margin-top: 15px;
-
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+      z-index: 2;
+      
       .discount-detail {
         display: flex;
         justify-content: center;
         gap: 10px;
-        font-size: 1rem;
-
+        font-size: 14px;
+        
         .label {
-          color: rgba(255, 255, 255, 0.6);
+          color: $text-muted;
+          font-weight: 500;
         }
-
+        
         .value {
-          color: #D4AF37;
+          color: $accent-gold;
+          font-weight: 600;
         }
       }
     }
   }
-
+  
   .user-cards {
     .user-cards-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
-
+      flex-wrap: wrap;
+      gap: 15px;
+      
       h2 {
-        color: #D4AF37;
+        font-size: 20px;
+        font-weight: 700;
+        color: $text-white;
+        background: linear-gradient(135deg, $text-white, $accent-gold);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
       }
-
+      
       .add-card-btn {
-        background: linear-gradient(135deg, #D4AF37 0%, #FFDB6E 100%);
-        color: #0f0f23;
-        padding: 8px 16px;
+        padding: 12px 20px;
+        background: linear-gradient(135deg, $accent-gold, #ffd700);
+        color: #000;
+        border: none;
         border-radius: 12px;
         font-weight: 600;
         cursor: pointer;
-        border: none;
-        transition: 0.3s;
-
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        
         &:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+          transform: translateY(-2px);
+          box-shadow: 0 5px 15px rgba($accent-gold, 0.4);
         }
       }
     }
-
+    
+    .no-cards {
+      text-align: center;
+      padding: 40px 20px;
+      color: $text-muted;
+      
+      p {
+        margin-bottom: 10px;
+        font-size: 16px;
+      }
+    }
+    
     .cards-list {
       display: flex;
       flex-direction: column;
       gap: 15px;
-
+      
       .card-item {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        padding: 20px;
         background: rgba(255, 255, 255, 0.05);
         border-radius: 16px;
-        padding: 15px 20px;
-
+        transition: all 0.3s ease;
+        position: relative;
+        
+        &:hover {
+          background: rgba(255, 255, 255, 0.08);
+          transform: translateX(5px);
+        }
+        
         .card-logo {
-          width: 60px;
-          height: 60px;
-          border-radius: 50%;
+          width: 50px;
+          height: 50px;
+          border-radius: 12px;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-weight: bold;
-          font-size: 1.2rem;
           background: white;
-          color: #D4AF37;
+          box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+          
+          &.lukoil {
+            background: linear-gradient(135deg, #FF2E00, #FF7B00);
+          }
+          
+          &.rosneft {
+            background: linear-gradient(135deg, #003366, #0066CC);
+          }
+          
+          .partner-logo-img {
+            max-width: 35px;
+            max-height: 35px;
+            object-fit: contain;
+          }
         }
-
+        
         .card-info {
           flex: 1;
           margin-left: 15px;
-
+          
           .card-number {
             font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 4px;
+            color: $text-white;
           }
-
+          
           .card-status {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.6);
-
+            font-size: 12px;
+            font-weight: 500;
+            
             &.active {
               color: #4CAF50;
             }
+            
+            &.loading {
+              color: $accent-gold;
+            }
           }
         }
-
+        
         .delete-card-btn {
           background: none;
           border: none;
-          color: rgba(255, 255, 255, 0.6);
-          font-size: 1.5rem;
+          color: $text-muted;
+          font-size: 24px;
           cursor: pointer;
-          transition: 0.2s;
-
+          padding: 5px;
+          transition: all 0.2s ease;
+          border-radius: 6px;
+          
           &:hover {
             color: #ff4d4d;
+            background: rgba(255, 77, 77, 0.1);
           }
         }
       }
     }
   }
-
-  .promotion-card {
-    position: relative;
-    text-align: center;
-    transition: all 0.3s ease;
-
-    &:hover {
-      transform: translateY(-5px);
-      background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.05) 100%);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  
+  .instruction-card {
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: $text-white;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-
-    .promotion-icon {
-      font-size: 2rem;
-      margin-bottom: 10px;
-    }
-
-    h3 {
-      font-size: 1.3rem;
-      color: #D4AF37;
-      margin-bottom: 10px;
-    }
-
+    
     p {
-      font-size: 0.95rem;
-      color: rgba(255, 255, 255, 0.7);
+      color: $text-light;
+      margin-bottom: 15px;
+      line-height: 1.5;
     }
-
-    .promotion-discount {
-      margin-top: 15px;
-      font-weight: bold;
-      color: #D4AF37;
-    }
-
-    .soon-banner {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      background: rgba(212, 175, 55, 0.2);
-      color: #D4AF37;
-      padding: 4px 10px;
-      font-size: 0.8rem;
-      border-radius: 8px;
+    
+    ol {
+      padding-left: 20px;
+      
+      li {
+        color: $text-light;
+        margin-bottom: 10px;
+        line-height: 1.5;
+        
+        &::marker {
+          color: $accent-gold;
+          font-weight: 600;
+        }
+      }
     }
   }
-
+  
   .promotions-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px;
   }
-
-  .instruction-card,
-  .qr-instruction,
-  .terms-section {
-    h2, h3 {
-      font-size: 1.5rem;
-      margin-bottom: 15px;
-      color: #D4AF37;
+  
+  .promotion-card {
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    padding: 30px 25px;
+    
+    .soon-banner {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: rgba($accent-gold, 0.2);
+      color: $accent-gold;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
     }
-
-    ol, ul {
-      padding-left: 20px;
-      li {
-        margin-bottom: 10px;
-        color: rgba(255, 255, 255, 0.85);
+    
+    .promotion-icon {
+      font-size: 40px;
+      margin-bottom: 15px;
+      display: block;
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: $text-white;
+      margin-bottom: 10px;
+    }
+    
+    p {
+      font-size: 14px;
+      color: $text-muted;
+      line-height: 1.5;
+      margin-bottom: 15px;
+    }
+    
+    .promotion-discount {
+      font-size: 20px;
+      font-weight: 800;
+      color: $accent-gold;
+      text-shadow: 0 0 10px rgba($accent-gold, 0.3);
+    }
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at top right, rgba($accent-gold, 0.1), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    &:hover::before {
+      opacity: 1;
+    }
+  }
+  
+  .qr-instruction {
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: $text-white;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .qr-locations {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      
+      .qr-location {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 16px;
+        transition: all 0.3s ease;
+        
+        &:hover {
+          background: rgba(255, 255, 255, 0.08);
+          transform: translateX(5px);
+        }
+        
+        .location-icon {
+          font-size: 24px;
+          width: 50px;
+          height: 50px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: rgba($accent-gold, 0.1);
+          border-radius: 12px;
+          color: $accent-gold;
+        }
+        
+        .location-info {
+          flex: 1;
+          
+          h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: $text-white;
+            margin-bottom: 5px;
+          }
+          
+          p {
+            font-size: 14px;
+            color: $text-muted;
+            line-height: 1.4;
+          }
+        }
       }
     }
   }
-
+  
+  .terms-section {
+    h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: $text-white;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    ul {
+      padding-left: 20px;
+      
+      li {
+        color: $text-light;
+        margin-bottom: 10px;
+        line-height: 1.5;
+        
+        &::marker {
+          color: $accent-gold;
+        }
+      }
+    }
+  }
+  
+  .welcome-modal {
+    text-align: center;
+    
+    .modal-header {
+      justify-content: center;
+      
+      h2 {
+        font-size: 24px;
+        text-align: center;
+      }
+    }
+    
+    .welcome-content {
+      margin: 20px 0;
+      
+      p {
+        color: $text-light;
+        margin-bottom: 20px;
+        line-height: 1.5;
+      }
+      
+      .partners-showcase {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        margin: 20px 0;
+        
+        .partner-card {
+          padding: 20px;
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 16px;
+          transition: all 0.3s ease;
+          
+          &:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-3px);
+          }
+          
+          .partner-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-weight: 700;
+            color: white;
+            
+            &.lukoil {
+              background: linear-gradient(135deg, #FF2E00, #FF7B00);
+            }
+            
+            &.rosneft {
+              background: linear-gradient(135deg, #003366, #0066CC);
+            }
+          }
+          
+          p {
+            color: $text-muted;
+            font-size: 14px;
+            margin: 0;
+          }
+        }
+      }
+    }
+    
+    .modal-actions {
+      justify-content: center;
+      
+      button {
+        min-width: 120px;
+        
+        &.primary {
+          background: linear-gradient(135deg, $accent-gold, #ffd700);
+          color: #000;
+        }
+      }
+    }
+  }
 }
-// Модальные окна
+
+
+@media (max-width: 768px) {
+  .promotions-page {
+    padding: 15px 15px 100px;
+    
+    .promotions-container {
+      gap: 20px;
+    }
+    
+    .discount-banner {
+      h1 {
+        font-size: 24px;
+      }
+      
+      .discount-amount {
+        font-size: 28px;
+      }
+    }
+    
+    .user-cards {
+      .user-cards-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+        
+        h2 {
+          text-align: center;
+        }
+      }
+    }
+    
+    .promotions-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .qr-locations {
+      .qr-location {
+        flex-direction: column;
+        text-align: center;
+        
+        .location-info {
+          text-align: center;
+        }
+      }
+    }
+    
+    .welcome-modal {
+      .partners-showcase {
+        grid-template-columns: 1fr !important;
+      }
+    }
+  }
+}
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -395,43 +797,25 @@
       }
     }
   }
-}
+} 
 
-// Анимации
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slideIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-
-// Адаптив
-@media (max-width: 768px) {
-  .promotions-page {
-    padding: 15px;
-
-    .discount-banner {
-      h1 {
-        font-size: 1.6rem;
-      }
-
-      .discount-amount {
-        font-size: 1.3rem;
-      }
-    }
-
-    .promotions-grid {
-      grid-template-columns: 1fr;
-    }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-
-.company_name {
-
-  color: black;
+.promotion-card, .qr-location, .card-item {
+  animation: fadeIn 0.6s ease;
 }
+
+@for $i from 1 through 10 {
+  .promotion-card:nth-child(#{$i}) {
+    animation-delay: #{$i * 0.1}s;
+  }
+}   

@@ -1,74 +1,86 @@
-.about-us-page {
-  padding: 20px;
-  padding-bottom: 100px;
-  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%);
-  min-height: 100vh;
-  color: #FFFFFF;
-  margin-top: 120px ;
 
+@import '../PromotionsPage/PromotionsPage.scss';
+
+.about-us-page {
+  min-height: 100vh;
+  background: $bg-dark;
+  color: $text-white;
+  padding: 20px 20px 120px;
+  font-family: 'Inter', sans-serif;
+  position: relative;
+  overflow-x: hidden;
+
+  
   .about-header {
     text-align: center;
     padding: 40px 0;
+    position: relative;
+    z-index: 2;
 
     .logo {
       width: 120px;
       height: 120px;
       margin: 0 auto 20px;
-      background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.05) 100%);
+      background: linear-gradient(135deg, rgba($accent-gold, 0.1) 0%, rgba($accent-gold, 0.05) 100%);
       border-radius: 24px;
       display: flex;
       align-items: center;
       justify-content: center;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid $card-border;
+      animation: float 4s ease-in-out infinite;
 
       .logo-icon {
         font-size: 50px;
-        color: #D4AF37;
+        color: $accent-gold;
+        animation: pulse 2s ease-in-out infinite;
       }
     }
 
     h1 {
       font-size: 2.5rem;
       margin-bottom: 10px;
-      background: linear-gradient(135deg, #D4AF37 0%, #FFDB6E 100%);
+      background: linear-gradient(135deg, $text-white, $accent-gold);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      font-weight: 800;
+      text-shadow: 0 0 20px rgba($accent-gold, 0.3);
     }
 
     .subtitle {
       font-size: 1.2rem;
-      color: rgba(255, 255, 255, 0.7);
+      color: $text-muted;
       max-width: 600px;
       margin: 0 auto;
+      line-height: 1.5;
     }
   }
 
   .about-content {
     max-width: 1200px;
     margin: 0 auto;
+    position: relative;
+    z-index: 2;
 
     .about-section {
-      background: rgba(20, 20, 43, 0.8);
-      backdrop-filter: blur(20px);
-      border-radius: 24px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      @include glass-effect;
       padding: 30px;
       margin-bottom: 30px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      animation: fadeIn 0.6s ease;
 
       h2 {
         font-size: 1.8rem;
         margin-bottom: 20px;
-        color: #D4AF37;
+        color: $accent-gold;
         display: flex;
         align-items: center;
+        font-weight: 700;
 
         &::after {
           content: '';
           flex: 1;
           height: 1px;
-          background: rgba(255, 255, 255, 0.1);
+          background: $card-border;
           margin-left: 15px;
         }
       }
@@ -77,39 +89,38 @@
         p {
           margin-bottom: 15px;
           line-height: 1.6;
-          color: rgba(255, 255, 255, 0.9);
+          color: $text-light;
         }
       }
     }
 
     .partners-section {
-      background: rgba(20, 20, 43, 0.8);
-      backdrop-filter: blur(20px);
-      border-radius: 24px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      @include glass-effect;
       padding: 30px;
       margin-bottom: 30px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      animation: fadeIn 0.8s ease;
 
       h2 {
         font-size: 1.8rem;
         margin-bottom: 15px;
-        color: #D4AF37;
+        color: $accent-gold;
         display: flex;
         align-items: center;
+        font-weight: 700;
 
         &::after {
           content: '';
           flex: 1;
           height: 1px;
-          background: rgba(255, 255, 255, 0.1);
+          background: $card-border;
           margin-left: 15px;
         }
       }
 
       .partners-description {
         margin-bottom: 25px;
-        color: rgba(255, 255, 255, 0.7);
+        color: $text-muted;
+        line-height: 1.5;
       }
 
       .partners-grid {
@@ -124,11 +135,13 @@
           text-align: center;
           transition: all 0.3s ease;
           border: 1px solid rgba(255, 255, 255, 0.05);
+          animation: fadeIn 1s ease;
 
           &:hover {
             transform: translateY(-5px);
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.05) 100%);
+            background: linear-gradient(135deg, rgba($accent-gold, 0.1) 0%, rgba($accent-gold, 0.05) 100%);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            @include glow-effect(rgba($accent-gold, 0.2));
           }
 
           .partner-logo {
@@ -142,38 +155,37 @@
             margin: 0 auto 15px;
             font-weight: bold;
             font-size: 1.2rem;
-            color: #D4AF37;
+            color: $accent-gold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
           }
 
           .partner-name {
             font-weight: 600;
-            color: rgba(255, 255, 255, 0.9);
+            color: $text-white;
           }
         }
       }
     }
 
     .advantages-section {
-      background: rgba(20, 20, 43, 0.8);
-      backdrop-filter: blur(20px);
-      border-radius: 24px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      @include glass-effect;
       padding: 30px;
       margin-bottom: 30px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      animation: fadeIn 1s ease;
 
       h2 {
         font-size: 1.8rem;
         margin-bottom: 25px;
-        color: #D4AF37;
+        color: $accent-gold;
         display: flex;
         align-items: center;
+        font-weight: 700;
 
         &::after {
           content: '';
           flex: 1;
           height: 1px;
-          background: rgba(255, 255, 255, 0.1);
+          background: $card-border;
           margin-left: 15px;
         }
       }
@@ -190,26 +202,30 @@
           text-align: center;
           transition: all 0.3s ease;
           border: 1px solid rgba(255, 255, 255, 0.05);
+          animation: fadeIn 1.2s ease;
 
           &:hover {
             transform: translateY(-5px);
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.05) 100%);
+            background: linear-gradient(135deg, rgba($accent-gold, 0.1) 0%, rgba($accent-gold, 0.05) 100%);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            @include glow-effect(rgba($accent-gold, 0.2));
           }
 
           .advantage-icon {
             font-size: 2.5rem;
             margin-bottom: 15px;
+            animation: float 3s ease-in-out infinite;
           }
 
           h3 {
             font-size: 1.2rem;
             margin-bottom: 10px;
-            color: #D4AF37;
+            color: $accent-gold;
+            font-weight: 700;
           }
 
           p {
-            color: rgba(255, 255, 255, 0.7);
+            color: $text-muted;
             line-height: 1.5;
           }
         }
@@ -218,11 +234,10 @@
   }
 }
 
-// Адаптивность
 @media (max-width: 768px) {
   .about-us-page {
-    padding: 15px;
-    padding-bottom: 100px;
+    padding: 15px 15px 100px;
+    
 
     .about-header {
       padding: 20px 0;
@@ -256,8 +271,30 @@
       .advantages-section {
         .advantages-grid {
           grid-template-columns: 1fr;
+          gap: 15px;
+          
+          .advantage-card {
+            padding: 20px;
+          }
         }
       }
     }
   }
+}
+
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
 }

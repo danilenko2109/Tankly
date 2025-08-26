@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'; 
 import NavBar from '../../components/NavBar/NavBar'; 
+import Header from '../../components/Header/Header';
 import './PromotionsPage.scss'; 
 
 const SoonBanner = () => (
@@ -145,11 +146,11 @@ function AddCardModal({ isOpen, onClose, onAddCard }) {
           {error && <div className="error-message">{error}</div>}
           
           <div className="modal-actions">
-            <button type="button" onClick={onClose} disabled={isProcessing}>
-              Отмена
-            </button>
-            <button type="submit" disabled={isProcessing} className={isProcessing ? 'processing' : ''}>
+            <button type="submit" disabled={isProcessing} className={isProcessing ? 'processing' : ''} className="mainbtn">
               {isProcessing ? 'Проверка...' : 'Добавить карту'}
+            </button>
+            <button type="button" onClick={onClose} disabled={isProcessing} className="mainbtn" background-color="red">
+              Отмена
             </button>
           </div>
         </form>
@@ -269,6 +270,7 @@ function PromotionsPage() {
 
   return (
     <div className="promotions-page">
+      <Header></Header>
       <div className="animated-background">
         <div className="particles"></div>
         <div className="gradient-overlay"></div>

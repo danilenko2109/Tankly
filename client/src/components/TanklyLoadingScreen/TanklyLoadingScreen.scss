@@ -1,0 +1,96 @@
+.tankly-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #0f1224;
+  z-index: 9999;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: white;
+}
+
+.loader-container {
+  text-align: center;
+  z-index: 10;
+}
+
+.spinner-wrapper {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 25px;
+}
+
+.spinner-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 2px solid rgba(255, 215, 0, 0.3);
+  border-radius: 50%;
+  border-top: 2px solid #ffd700;
+  animation: spin 1.5s linear infinite;
+}
+
+.fuel-center {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  top: 25px;
+  left: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fuel-drop {
+  width: 40px;
+  height: 50px;
+  background: #ffd700;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+.app-name {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: #ffd700;
+}
+
+.loading-status {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 10px;
+}
+
+.progress-bar {
+  width: 180px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  margin: 20px auto;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: #ffd700;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.8; }
+}

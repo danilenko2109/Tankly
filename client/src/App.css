@@ -42,3 +42,19 @@
 .read-the-docs {
   color: #888;
 }
+
+.mainbtn{
+      padding
+: 12px 20px;
+    background: linear-gradient(135deg, #D4AF37, #ffd700);
+    color: #000;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex
+;
+    align-items: center;
+    gap: 8px;
+}

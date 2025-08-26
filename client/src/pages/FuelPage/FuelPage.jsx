@@ -1,10 +1,11 @@
-
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import NavBar from '../../components/NavBar/NavBar';
+import BalanceModal from '../../components/BalanceModal/BalanceModal';
+import Header from '../../components/Header/Header';
 
 import './FuelPage.scss';
+import TanklyLoadingScreen from '../../components/TanklyLoadingScreen/TanklyLoadingScreen';
 
-// localStorage
 const LS_KEYS = {
   state: 'fuelApp:premium:v4',
 };
@@ -12,9 +13,8 @@ const LS_KEYS = {
 const saveState = (s) => {
   try {
     localStorage.setItem(LS_KEYS.state, JSON.stringify(s));
-  } catch{
-    console.log("срун пидар");
-    
+  } catch {
+    console.log("Ошибка сохранения");
   }
 };
 
@@ -26,7 +26,6 @@ const loadState = () => {
     return null;
   }
 };
-
 
 const initialPrices = {
   'ДТ': 69.2,
@@ -74,35 +73,34 @@ function FuelPage() {
 
   useEffect(() => { hydrated.current = true; }, []);
 
-
-  const [showScanner, setShowScanner] = useState(false);
   const [selectedFuel, setSelectedFuel] = useState(state.favoriteFuel);
   const [fuelAmount, setFuelAmount] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState('card');
-  const [showAddBalanceModal, setShowAddBalanceModal] = useState(false);
-  const [cardNumber, setCardNumber] = useState('');
-  const [cardExpiry, setCardExpiry] = useState('');
-  const [cardCVC, setCardCVC] = useState('');
-  const [cardName, setCardName] = useState('');
-  const [topUpAmount, setTopUpAmount] = useState(1000);
+  const [paymentMethod, setPaymentMethod] = useState('balance');
+  const [ setShowAddBalanceModal] = useState(false);
+  const [ setCardNumber] = useState('');
+  const [ setCardExpiry] = useState('');
+  const [ setCardCVC] = useState('');
+  const [ setCardName] = useState('');
+  const [topUpAmount] = useState(1000);
   const [isDrifting, setIsDrifting] = useState(true);
   const [lastPricesUpdate, setLastPricesUpdate] = useState(Date.now());
   const [activeTab, setActiveTab] = useState('prices');
   const [isLoading, setIsLoading] = useState(true);
+  const [paymentNotification, setPaymentNotification] = useState(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [showSuccessTopUp, setShowSuccessTopUp] = useState(false);
-  const [lastTransaction, setLastTransaction] = useState(null);
+  const [successMessage, setSuccessMessage] = useState('');
+const [isBalanceModalOpen, setIsBalanceModalOpen] = useState(false);
+  const [balance, setBalance] = useState(0);
 
   const userStatus = useMemo(() => deriveStatus(state.loyaltyPoints), [state.loyaltyPoints]);
-
-
+  
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 1500);
     return () => clearTimeout(timer);
   }, []);
-
+  
   function baseDiscountForFuel(fuelType) {
     if (!fuelType || !userStatus || !DISCOUNTS[userStatus]) return 0;
     
@@ -110,13 +108,13 @@ function FuelPage() {
     if (fuelType === 'ДТ') return DISCOUNTS[userStatus].diesel || 0;
     return DISCOUNTS[userStatus].petrol || 0;
   }
-
+  
   function finalPricePerL(fuelType) {
     const price = state.prices?.[fuelType] || 0;
     const baseDisc = baseDiscountForFuel(fuelType) || 0;
     return Math.max(0, Number((price + baseDisc).toFixed(1)));
   }
-
+  
   useEffect(() => {
     if (selectedFuel && fuelAmount > 0) {
       setTotalPrice(formatMoney(finalPricePerL(selectedFuel) * fuelAmount));
@@ -124,7 +122,6 @@ function FuelPage() {
       setTotalPrice(0);
     }
   }, [selectedFuel, fuelAmount, state.prices, userStatus]);
-
 
   useEffect(() => {
     if (!isDrifting) return;
@@ -141,39 +138,27 @@ function FuelPage() {
     }, 60 * 1000);
     return () => clearInterval(iv);
   }, [isDrifting]);
+  
 
-  // Пополнение баланса
-  const handleAddBalance = () => {
-    setShowAddBalanceModal(true);
+  
+  const handleAddBalance = (amount) => {
+    setBalance(prev => prev + amount);
+     setShowAddBalanceModal(true);
   };
-
-  const handleCardPayment = () => {
-    setTimeout(() => {
-      setState(s => ({
-        ...s,
-        userBalance: Number((s.userBalance + topUpAmount).toFixed(2))
-      }));
-      
-      setShowAddBalanceModal(false);
-      setCardNumber('');
-      setCardExpiry('');
-      setCardCVC('');
-      setCardName('');
-      
-      setShowSuccessTopUp(true);
-      setTimeout(() => setShowSuccessTopUp(false), 3000);
-    }, 2000);
-  };
-
+  
 
   function handleRefuel() {
     if (!selectedFuel || fuelAmount <= 0) {
-      alert('Выберите топливо и укажите количество');
+      setPaymentNotification({
+        type: 'error',
+        message: 'Выберите топливо и укажите количество'
+      });
       return;
     }
     
     setState(s => ({ ...s, favoriteFuel: selectedFuel }));
     setShowPaymentModal(true);
+    setPaymentNotification(null);
   }
 
   function handlePayment() {
@@ -181,7 +166,18 @@ function FuelPage() {
     const total = Number(pricePerL * fuelAmount);
 
     if (paymentMethod === 'balance' && (state.userBalance || 0) < total) {
-      alert('Недостаточно средств на балансе');
+      setPaymentNotification({
+        type: 'error',
+        message: 'На вашем балансе недостаточно средств для совершения операции'
+      });
+      return;
+    }
+
+    if (paymentMethod === 'card') {
+      setPaymentNotification({
+        type: 'error',
+        message: 'В настоящее время оплата банковской картой недоступна. Пожалуйста, выберите другой способ оплаты.'
+      });
       return;
     }
 
@@ -205,37 +201,24 @@ function FuelPage() {
       activePayment: historyItem
     }));
 
-    setShowPaymentModal(false);
-    setLastTransaction(historyItem);
-    setShowSuccessModal(true);
-    setFuelAmount(0);
+    setPaymentNotification({
+      type: 'success',
+      message: 'Топливо успешно приобретено! Перейдите в раздел "Мои купоны" и отсканируйте купон на заправке.'
+    });
+
+    setTimeout(() => {
+      setShowPaymentModal(false);
+      setFuelAmount(0);
+      setPaymentNotification(null);
+    }, 3000);
   }
 
-  const handleScan = (data) => {
-    if (!data) return;
-    const stationId = (String(data).match(/station:(\w+)/) || [])[1] || 'UNKNOWN';
-    setState(s => ({ ...s, lastStationId: stationId }));
-    
-    if (state.activePayment) {
-      setState(s => ({
-        ...s,
-        history: s.history.map(item => 
-          item.id === state.activePayment.id 
-            ? { ...item, status: 'completed', usedAt: new Date().toISOString() }
-            : item
-        ),
-        activePayment: null
-      }));
-      
-      alert('Оплата подтверждена! Можете начинать заправку.');
-      setShowScanner(false);
-      setShowSuccessModal(false);
-    }
-  };
-
-
   function getFuelIcon(f) {
-    switch (f) { case '95+': return '🔥'; case '100': return '⚡'; case 'ГАЗ': return '🔵'; default: return '⛽'; }
+    switch (f) { 
+      case 'АИ-95+': return '🔥'; 
+      case 'ГАЗ': return '🔵'; 
+      default: return '⛽'; 
+    }
   }
 
   function getStatusIcon(status) {
@@ -248,56 +231,62 @@ function FuelPage() {
 
   if (isLoading) {
     return (
-      <div className="loading-screen">
-        <div className="loading-content">
-          <div className="loading-spinner">
-            <div className="spinner-ring"></div>
-            <div className="fuel-drop">.</div>
-          </div>
-          <h2 className="loading-text">Tankly</h2>
-          <p className="loading-subtext">Загрузка приложения...</p>
-        </div>
-      </div>
+       <TanklyLoadingScreen/>
     );
   }
 
   return (
+
     <div className="fuel-page">
       <div className="animated-background">
+      <Header></Header>
         <div className="particles"></div>
         <div className="gradient-overlay"></div>
       </div>
 
-      {showSuccessTopUp && (
-        <div className="success-notification">
-          <div className="success-icon">✅</div>
-          <span>Баланс пополнен на {topUpAmount} ₽</span>
+      {showSuccessModal && (
+        <div className="modal-overlay">
+          <div className="modal glass-card">
+            <div className="success-content">
+              <div className="success-icon">✅</div>
+              <div className="success-message">{successMessage}</div>
+              <button className="btn-primary" onClick={() => setShowSuccessModal(false)}>OK</button>
+            </div>
+          </div>
         </div>
       )}
 
       <header className="fuel-header">
         <div className="user-info">
-          <div className="balance-card glass-card">
-            <div className="balance-info">
-              <span className="label">Баланс</span>
-              <span className="value">{formatMoney(state.userBalance || 0)} ₽</span>
-            </div>
-            <button className="add-balance-btn pulse" onClick={handleAddBalance}>
-              <span className="plus-icon">+</span>
-            </button>
-          </div>
+          <div className="glass-card balance-card">
+        <div>
+          <span className="label">Баланс</span>
+          <div className="value">{balance} ₽</div>
+        </div>
+        <button 
+          className="add-balance-btn"
+          onClick={() => setIsBalanceModalOpen(true)}
+          title="Пополнить баланс"
+        >
+          +
+        </button>
+      </div>
+
+      
           
           <div className="points-card glass-card">
             <div className="points-info">
               <span className="label">Баллы</span>
-              <span className="value">0</span>
+              <span className="value">{state.loyaltyPoints}</span>
             </div>
-            <div className="status-badge" style={{ backgroundColor: DISCOUNTS[userStatus]?.color || '#D4AF37' }}>
-              {DISCOUNTS[userStatus]?.name || 'Базовый'}
+            <div className="status-badge" style={{ 
+              background: 'rgba(212, 175, 55, 0.2)',
+              color: '#D4AF37'
+            }}>
+             Скоро
             </div>
           </div>
         </div>
-
       </header>
 
       <nav className="section-nav">
@@ -312,14 +301,18 @@ function FuelPage() {
           <div className="nav-indicator"></div>
         </button>
       </nav>
-
+<BalanceModal
+        isOpen={isBalanceModalOpen}
+        onClose={() => setIsBalanceModalOpen(false)}
+        onAddBalance={handleAddBalance}
+      />
       <div className="main-content">
         {activeTab === 'prices' && (
           <section className="fuel-prices">
             <div className="section-header">
               <h2 className="section-title">Актуальные цены</h2>
               <div className="prices-controls">
-                <span className="update-time">{new Date(lastPricesUpdate).toLocaleTimeString()}</span>
+                <span className="update-time">Обновлено: {new Date(lastPricesUpdate).toLocaleTimeString()}</span>
                 <label className="drift-toggle switch">
                   <input type="checkbox" checked={isDrifting} onChange={() => setIsDrifting(v => !v)} />
                   <span className="slider"></span>
@@ -368,7 +361,7 @@ function FuelPage() {
                           <div className="total-section">
                             <div className="total-price">Итого: <span>{totalPrice} ₽</span></div>
                             <button className="refuel-btn glow-button" onClick={handleRefuel}>
-                              <span>Заправить</span>
+                              <span className='add-card-btn'>Заправить</span>
                               <div className="btn-glow"></div>
                             </button>
                           </div>
@@ -390,7 +383,7 @@ function FuelPage() {
             </div>
             
             {!state.history || state.history.length === 0 ? (
-              <div className="empty-state">
+              <div className="empty-state glass-card">
                 <div className="empty-icon">📋</div>
                 <p>Пока нет операций</p>
                 <small>После заправки здесь появятся ваши транзакции</small>
@@ -424,248 +417,58 @@ function FuelPage() {
         <div className="modal-overlay">
           <div className="modal glass-card">
             <h3>Оплата заправки</h3>
-            <div className="payment-details">
-              <div className="detail-row"><span>Топливо:</span><span>{selectedFuel}</span></div>
-              <div className="detail-row"><span>Количество:</span><span>{fuelAmount} л</span></div>
-              <div className="detail-row"><span>Цена за литр:</span><span>{finalPricePerL(selectedFuel)} ₽</span></div>
-              <div className="detail-row total"><span>Сумма:</span><span>{totalPrice} ₽</span></div>
-            </div>
             
-            <div className="payment-methods">
-              <h4>Способ оплаты</h4>
-              <div className="method-options">
-                <label className="method-option">
-                  <input type="radio" name="payment-method" value="card" checked={paymentMethod === 'card'} onChange={() => setPaymentMethod('card')} />
-                  <span>Банковская карта</span>
-                </label>
-                <label className="method-option">
-                  <input type="radio" name="payment-method" value="balance" checked={paymentMethod === 'balance'} onChange={() => setPaymentMethod('balance')} />
-                  <span>Баланс приложения ({formatMoney(state.userBalance || 0)} ₽)</span>
-                </label>
+            {paymentNotification && (
+              <div className={`payment-notification ${paymentNotification.type}`}>
+                <div className="notification-icon">
+                  {paymentNotification.type === 'success' ? '✅' : '❌'}
+                </div>
+                <div className="notification-message">
+                  {paymentNotification.message}
+                </div>
               </div>
-            </div>
+            )}
             
-            <div className="modal-actions">
-              <button className="btn-secondary" onClick={() => setShowPaymentModal(false)}>Отмена</button>
-              <button className="btn-primary glow-button" onClick={handlePayment}>Оплатить</button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {showAddBalanceModal && (
-        <div className="modal-overlay">
-          <div className="modal glass-card">
-            <h3>Пополнение баланса</h3>
-            <p className="modal-subtitle">Введите данные банковской карты</p>
-            
-            <div className="card-form">
-              <div className="amount-selector">
-                <label>Сумма пополнения</label>
-                <div className="amount-options">
-                  {[500, 1000, 2000, 3000, 5000].map(amount => (
-                    <button key={amount} className={`amount-option ${topUpAmount === amount ? 'selected' : ''}`} onClick={() => setTopUpAmount(amount)}>
-                      {amount} ₽
-                    </button>
-                  ))}
-                </div>
-                <div className="custom-amount">
-                  <input type="number" placeholder="Другая сумма" value={topUpAmount} onChange={(e) => setTopUpAmount(Math.max(0, Number(e.target.value)))} min="100" step="100" />
-                </div>
-              </div>
-
-              <div className="card-preview">
-                <div className="card-front">
-                  <div className="card-chip"></div>
-                  <div className="card-number-preview">{cardNumber || '•••• •••• •••• ••••'}</div>
-                  <div className="card-bottom">
-                    <div className="card-name-preview">{cardName || 'IVAN IVANOV'}</div>
-                    <div className="card-expiry-preview">{cardExpiry || 'ММ/ГГ'}</div>
-                  </div>
-                </div>
-                <div className="card-back">
-                  <div className="card-strip"></div>
-                  <div className="card-cvc-preview">{cardCVC ? '•'.repeat(cardCVC.length) : '•••'}</div>
-                </div>
-              </div>
-
-              <div className="input-group">
-                <label htmlFor="card-number">Номер карты</label>
-                <input type="text" id="card-number" value={cardNumber} onChange={(e) => {
-                  const value = e.target.value.replace(/\D/g, '');
-                  let formatted = value.replace(/(\d{4})/g, '$1 ').trim();
-                  if (formatted.length > 19) formatted = formatted.slice(0, 19);
-                  setCardNumber(formatted);
-                }} placeholder="0000 0000 0000 0000" maxLength="19" className="card-input" />
-              </div>
-              
-              <div className="input-row">
-                <div className="input-group">
-                  <label htmlFor="card-expiry">Срок действия</label>
-                  <input type="text" id="card-expiry" value={cardExpiry} onChange={(e) => {
-                    let value = e.target.value.replace(/\D/g, '');
-                    if (value.length > 2) value = value.slice(0, 2) + '/' + value.slice(2, 4);
-                    if (value.length > 5) value = value.slice(0, 5);
-                    setCardExpiry(value);
-                  }} placeholder="ММ/ГГ" maxLength="5" className="card-input" />
+            {!paymentNotification || paymentNotification.type === 'error' ? (
+              <>
+                <div className="payment-details">
+                  <div className="detail-row"><span>Топливо:</span><span>{selectedFuel}</span></div>
+                  <div className="detail-row"><span>Количество:</span><span>{fuelAmount} л</span></div>
+                  <div className="detail-row"><span>Цена за литр:</span><span>{finalPricePerL(selectedFuel)} ₽</span></div>
+                  <div className="detail-row total"><span>Сумма:</span><span>{totalPrice} ₽</span></div>
                 </div>
                 
-                <div className="input-group">
-                  <label htmlFor="card-cvc">CVC</label>
-                  <input type="password" id="card-cvc" value={cardCVC} onChange={(e) => {
-                    const value = e.target.value.replace(/\D/g, '');
-                    if (value.length > 3) return;
-                    setCardCVC(value);
-                  }} placeholder="123" maxLength="3" className="card-input cvc-input" />
+                <div className="payment-methods">
+                  <h4>Способ оплаты</h4>
+                  <div className="method-options">
+                    <label className="method-option">
+                      <input type="radio" name="payment-method" value="card" checked={paymentMethod === 'card'} onChange={() => setPaymentMethod('card')} />
+                      <span>Банковская карта</span>
+                    </label>
+                    <label className="method-option">
+                      <input type="radio" name="payment-method" value="balance" checked={paymentMethod === 'balance'} onChange={() => setPaymentMethod('balance')} />
+                      <span>Баланс приложения ({formatMoney(state.userBalance || 0)} ₽)</span>
+                    </label>
+                  </div>
                 </div>
+                
+                <div className="modal-actions">
+                  <button className="mainbtn" onClick={() => setShowPaymentModal(false)}>Отмена</button>
+                  <button className="mainbtn" onClick={handlePayment}>Оплатить</button>
+                </div>
+              </>
+            ) : (
+              <div className="modal-actions">
+                <button className="mainbtn" onClick={() => {
+                  setShowPaymentModal(false);
+                  setFuelAmount(0);
+                  setPaymentNotification(null);
+                }}>Закрыть</button>
               </div>
-              
-              <div className="input-group">
-                <label htmlFor="card-name">Имя владельца</label>
-                <input type="text" id="card-name" value={cardName} onChange={(e) => setCardName(e.target.value.toUpperCase())} placeholder="IVAN IVANOV" className="card-input" />
-              </div>
-            </div>
-            
-            <div className="modal-actions">
-              <button className="btn-secondary" onClick={() => setShowAddBalanceModal(false)}>Отмена</button>
-              <button className="btn-primary glow-button" onClick={handleCardPayment} disabled={!cardNumber || !cardExpiry || !cardCVC || !cardName || topUpAmount <= 0}>
-                Оплатить {topUpAmount} ₽
-              </button>
-            </div>
+            )}
           </div>
         </div>
       )}
-
-      {showAddBalanceModal && (
-      <div className="modal-overlay">
-        <div className="modal glass-card balance-modal">
-          <h3>Пополнение баланса</h3>
-          <p className="modal-subtitle">Введите данные банковской карты</p>
-          
-          <div className="card-form">
-            <div className="amount-selector">
-              <label>Сумма пополнения</label>
-              <div className="amount-options">
-                {[500, 1000, 2000, 3000, 5000].map(amount => (
-                  <button 
-                    key={amount} 
-                    className={`amount-option ${topUpAmount === amount ? 'selected' : ''}`}
-                    onClick={() => setTopUpAmount(amount)}
-                  >
-                    {amount} ₽
-                  </button>
-                ))}
-              </div>
-              <div className="custom-amount">
-                <input 
-                  type="number" 
-                  placeholder="Другая сумма" 
-                  value={topUpAmount} 
-                  onChange={(e) => setTopUpAmount(Math.max(0, Number(e.target.value)))} 
-                  min="100" 
-                  step="100" 
-                />
-              </div>
-            </div>
-
-            <div className="card-preview">
-              <div className="card-front">
-                <div className="card-chip"></div>
-                <div className="card-number-preview">{cardNumber || '•••• •••• •••• ••••'}</div>
-                <div className="card-bottom">
-                  <div className="card-name-preview">{cardName || 'IVAN IVANOV'}</div>
-                  <div className="card-expiry-preview">{cardExpiry || 'ММ/ГГ'}</div>
-                </div>
-              </div>
-              <div className="card-back">
-                <div className="card-strip"></div>
-                <div className="card-cvc-preview">{cardCVC ? '•'.repeat(cardCVC.length) : '•••'}</div>
-              </div>
-            </div>
-
-            <div className="input-group">
-              <label htmlFor="card-number">Номер карты</label>
-              <input 
-                type="text" 
-                id="card-number"
-                value={cardNumber}
-                onChange={(e) => {
-                  const value = e.target.value.replace(/\D/g, '');
-                  let formatted = value.replace(/(\d{4})/g, '$1 ').trim();
-                  if (formatted.length > 19) formatted = formatted.slice(0, 19);
-                  setCardNumber(formatted);
-                }}
-                placeholder="0000 0000 0000 0000"
-                maxLength="19"
-                className="card-input"
-              />
-            </div>
-            
-            <div className="input-row">
-              <div className="input-group">
-                <label htmlFor="card-expiry">Срок действия</label>
-                <input 
-                  type="text" 
-                  id="card-expiry"
-                  value={cardExpiry}
-                  onChange={(e) => {
-                    let value = e.target.value.replace(/\D/g, '');
-                    if (value.length > 2) value = value.slice(0, 2) + '/' + value.slice(2, 4);
-                    if (value.length > 5) value = value.slice(0, 5);
-                    setCardExpiry(value);
-                  }}
-                  placeholder="ММ/ГГ"
-                  maxLength="5"
-                  className="card-input"
-                />
-              </div>
-              
-              <div className="input-group">
-                <label htmlFor="card-cvc">CVC</label>
-                <input 
-                  type="password" 
-                  id="card-cvc"
-                  value={cardCVC}
-                  onChange={(e) => {
-                    const value = e.target.value.replace(/\D/g, '');
-                    if (value.length > 3) return;
-                    setCardCVC(value);
-                  }}
-                  placeholder="123"
-                  maxLength="3"
-                  className="card-input cvc-input"
-                />
-              </div>
-            </div>
-            
-            <div className="input-group">
-              <label htmlFor="card-name">Имя владельца</label>
-              <input 
-                type="text" 
-                id="card-name"
-                value={cardName}
-                onChange={(e) => setCardName(e.target.value.toUpperCase())}
-                placeholder="IVAN IVANOV"
-                className="card-input"
-              />
-            </div>
-          </div>
-          
-          <div className="modal-actions">
-            <button className="btn-secondary" onClick={() => setShowAddBalanceModal(false)}>Отмена</button>
-            <button 
-              className="btn-primary glow-button" 
-              onClick={handleCardPayment}
-              disabled={!cardNumber || !cardExpiry || !cardCVC || !cardName || topUpAmount <= 0}
-            >
-              Оплатить {topUpAmount} ₽
-            </button>
-          </div>
-        </div>
-      </div>
-    )}
-
-      {showScanner && <QrScanner onScan={handleScan} onClose={() => setShowScanner(false)} instruction="Наведите камеру на QR-код на топливной колонке для подтверждения оплаты" />}
 
       <NavBar activeTab="fuel" />
     </div>

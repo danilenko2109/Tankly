@@ -15,7 +15,7 @@ html, body {
   overflow-x: hidden;
 }
 
-// Scrollbar styles
+
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -34,7 +34,7 @@ html, body {
   background: lighten($accent-gold, 10%);
 }
 
-// Common utility classes
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
