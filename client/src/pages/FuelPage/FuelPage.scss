@@ -450,7 +450,8 @@
   
   .empty-state {
     @include glass-effect;
-    padding: 40px 20px;
+    padding: 40px 30px;
+    
     text-align: center;
     color: $text-muted;
     
@@ -480,7 +481,7 @@
     @include glass-effect;
     padding: 20px;
     transition: all 0.3s ease;
-    min-width: 320px;
+    min-width: 349px;
     
     &:hover {
       transform: translateX(5px);
