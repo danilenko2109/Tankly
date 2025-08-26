@@ -1,7 +1,9 @@
+
 @import '../PromotionsPage/PromotionsPage.scss';
 
 .fuel-page {
   min-height: 100vh;
+  
   background: $bg-dark;
   color: $text-white;
   padding: 20px 20px 120px;
@@ -242,14 +244,13 @@
     
     @media (max-width: 768px) {
       grid-template-columns: 1fr;
-      gap: 15px;
     }
   }
   
   .price-card {
     @include glass-effect;
     padding: 20px;
-    min-width: 300px;
+    min-width: 350px;
     transition: all 0.3s ease;
     animation: fadeIn 0.6s ease;
     cursor: pointer;
@@ -479,7 +480,7 @@
     @include glass-effect;
     padding: 20px;
     transition: all 0.3s ease;
-    min-width: 280px;
+    min-width: 320px;
     
     &:hover {
       transform: translateX(5px);
@@ -555,17 +556,17 @@
   
   .modal {
     @include glass-effect;
-    padding: 25px;
+    padding: 30px;
     width: 90%;
-    max-width: 400px;
+    max-width: 450px;
     animation: slideIn 0.4s ease;
     max-height: 90vh;
     overflow-y: auto;
     
     h3 {
       text-align: center;
-      margin-bottom: 20px;
-      font-size: 22px;
+      margin-bottom: 25px;
+      font-size: 24px;
       font-weight: 700;
       background: linear-gradient(135deg, $text-white, $accent-gold);
       -webkit-background-clip: text;
@@ -576,12 +577,11 @@
 
 .payment-notification {
   @include glass-effect;
-  padding: 12px;
-  margin-bottom: 15px;
+  padding: 15px;
+  margin-bottom: 20px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 14px;
+  gap: 12px;
   
   &.success {
     border-color: #00b894;
@@ -594,12 +594,18 @@
   }
   
   .notification-icon {
-    font-size: 18px;
+    font-size: 20px;
+  }
+  
+  .notification-message {
+    flex: 1;
+    font-size: 14px;
+    line-height: 1.4;
   }
 }
 
 .payment-details {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   
   .detail-row {
     display: flex;
@@ -614,33 +620,32 @@
     
     &.total {
       font-weight: 700;
-      font-size: 16px;
+      font-size: 18px;
       color: $accent-gold;
     }
   }
 }
 
 .payment-methods {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   
   h4 {
-    margin-bottom: 12px;
+    margin-bottom: 15px;
     font-weight: 600;
     color: $text-white;
-    font-size: 16px;
   }
   
   .method-options {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
     
     .method-option {
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 10px;
-      border-radius: 8px;
+      padding: 12px;
+      border-radius: 10px;
       background: rgba(255,255,255,0.05);
       border: 1px solid rgba(255,255,255,0.1);
       transition: all 0.3s ease;
@@ -659,7 +664,7 @@
 
 .modal-actions {
   display: flex;
-  gap: 12px;
+  gap: 15px;
   
   @media (max-width: 480px) {
     flex-direction: column;
@@ -667,7 +672,6 @@
   
   button {
     flex: 1;
-    padding: 12px;
   }
 }
 
@@ -675,16 +679,17 @@
   text-align: center;
   
   .success-icon {
-    font-size: 36px;
-    margin-bottom: 12px;
+    font-size: 40px;
+    margin-bottom: 15px;
   }
   
   .success-message {
-    margin-bottom: 15px;
-    font-size: 15px;
+    margin-bottom: 20px;
+    font-size: 16px;
     line-height: 1.4;
   }
 }
+
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
@@ -698,81 +703,260 @@
 
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
+  50% { transform: translateY(-10px); }
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
-}
-
-@keyframes glow {
-  0%, 100% { box-shadow: 0 0 10px rgba($accent-gold, 0.3); }
-  50% { box-shadow: 0 0 20px rgba($accent-gold, 0.6); }
-}
 
 @media (max-width: 768px) {
   .fuel-page {
     padding: 15px 15px 100px;
-    margin-top: 100px;
   }
   
   .fuel-header .user-info {
     grid-template-columns: 1fr;
-    gap: 12px;
   }
   
   .fuel-prices .prices-grid {
     grid-template-columns: 1fr;
   }
   
-  .price-card {
-    min-width: unset !important;
-    padding: 15px;
-  }
-  
   .section-nav {
     grid-template-columns: repeat(2, 1fr);
-    margin-bottom: 20px;
-  }
-  
-  .modal .modal {
-    padding: 20px;
   }
 }
 
-@media (max-width: 480px) {
-  .fuel-page {
-    padding: 12px 12px 90px;
-    margin-top: 90px;
-  }
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+.glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+.float {
+  animation: float 3s ease-in-out infinite;
+}
+
+
+
+.section-nav {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 18px;
+  padding: 8px;
+  margin-bottom: 30px;
+  backdrop-filter: blur(10px);
   
-  .fuel-header .glass-card {
-    padding: 15px;
-  }
-  
-  .prices-controls {
+  .nav-item {
+    display: flex;
     flex-direction: column;
-    align-items: flex-start !important;
-    gap: 10px !important;
-  }
-  
-  .fuel-pricing {
-    .final-price {
-      font-size: 18px !important;
-    }
-  }
-  
-  .amount-controls {
-    input {
-      font-size: 14px !important;
-      padding: 10px !important;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 8px;
+    background: transparent;
+    border: none;
+    color: $text-muted;
+    cursor: pointer;
+    border-radius: 14px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    
+    &.active {
+      background: rgba($accent-gold, 0.1);
+      color: $accent-gold;
+      
+      .nav-icon {
+        transform: scale(1.2);
+      }
+      
+      .nav-indicator {
+        width: 20px;
+        background: $accent-gold;
+      }
     }
     
-    .amount-btn {
-      width: 35px !important;
-      height: 35px !important;
-      font-size: 16px !important;
+    &:hover {
+      background: rgba(255,255,255,0.1);
     }
+    
+    .nav-icon {
+      font-size: 20px;
+      transition: transform 0.3s ease;
+    }
+    
+    .nav-text {
+      font-size: 11px;
+      font-weight: 500;
+    }
+    
+    .nav-indicator {
+      position: absolute;
+      bottom: 4px;
+      width: 0;
+      height: 2px;
+      background: transparent;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+  }
+}
+
+.fuel-prices {
+  margin-bottom: 30px;
+  animation: fadeIn 0.8s ease 0.2s both;
+} 
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  backdrop-filter: blur(10px);
+  animation: fadeIn 0.3s ease;
+  
+  .modal {
+    @include glass-effect;
+    padding: 30px;
+    width: 90%;
+    max-width: 450px;
+    animation: slideIn 0.4s ease;
+    max-height: 90vh;
+    overflow-y: auto;
+    
+    h3 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 24px;
+      font-weight: 700;
+      background: linear-gradient(135deg, $text-white, $accent-gold);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+}
+
+.payment-notification {
+  @include glass-effect;
+  padding: 15px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  
+  &.success {
+    border-color: #00b894;
+    background: rgba(#00b894, 0.1);
+  }
+  
+  &.error {
+    border-color: #ff4757;
+    background: rgba(#ff4757, 0.1);
+  }
+  
+  .notification-icon {
+    font-size: 20px;
+  }
+  
+  .notification-message {
+    flex: 1;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+}
+
+.payment-details {
+  margin-bottom: 20px;
+  
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    
+    &:last-child {
+      border-bottom: none;
+    }
+    
+    &.total {
+      font-weight: 700;
+      font-size: 18px;
+      color: $accent-gold;
+    }
+  }
+}
+
+.payment-methods {
+  margin-bottom: 25px;
+  
+  h4 {
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: $text-white;
+  }
+  
+  .method-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    
+    .method-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      
+      &:hover {
+        background: rgba(255,255,255,0.1);
+      }
+      
+      input[type="radio"] {
+        accent-color: $accent-gold;
+      }
+    }
+  }
+}
+
+.modal-actions {
+  display: flex;
+  gap: 15px;
+  
+  @media (max-width: 480px) {
+    flex-direction: column;
+  }
+  
+  button {
+    flex: 1;
+  }
+}
+
+.success-content {
+  text-align: center;
+  
+  .success-icon {
+    font-size: 40px;
+    margin-bottom: 15px;
+  }
+  
+  .success-message {
+    margin-bottom: 20px;
+    font-size: 16px;
+    line-height: 1.4;
   }
 }
