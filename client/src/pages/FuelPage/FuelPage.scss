@@ -3,7 +3,7 @@
 
 .fuel-page {
   min-height: 100vh;
-  
+  width: 100%;
   background: $bg-dark;
   color: $text-white;
   padding: 20px 20px 120px;
@@ -451,7 +451,7 @@
   .empty-state {
     @include glass-effect;
     padding: 40px 30px;
-    
+    width: 100%;
     text-align: center;
     color: $text-muted;
     
